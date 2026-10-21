@@ -2923,13 +2923,13 @@ export const NewConnectionModal = ({
                                 placeholder={socketPathPlaceholder}
                             />
                             {socketPathIssue === 'notAbsolute' && (
-                                <p className="text-[10px] text-amber-500 flex items-center gap-1 mt-0.5">
+                                <p className="text-[10px] text-accent-warning flex items-center gap-1 mt-0.5">
                                     <AlertCircle size={10} />{' '}
                                     {t('newConnection.socketPathNotAbsolute')}
                                 </p>
                             )}
                             {socketPathIssue === 'looksLikeDirectory' && (
-                                <p className="text-[10px] text-amber-500 flex items-center gap-1 mt-0.5">
+                                <p className="text-[10px] text-accent-warning flex items-center gap-1 mt-0.5">
                                     <AlertCircle size={10} />{' '}
                                     {t('newConnection.socketPathDirectory')}
                                 </p>
