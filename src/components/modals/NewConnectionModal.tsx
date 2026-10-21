@@ -68,7 +68,12 @@ import {
     isSchemaBasedMultiDbCapable,
     hasOptedIntoDatabaseSelection,
 } from '@/utils/database';
-import {unixSocketPathIssue, updateExtraField, withoutBlankSslMode} from '@/utils/connections';
+import {
+    hasUnixSockets,
+    unixSocketPathIssue,
+    updateExtraField,
+    withoutBlankSslMode,
+} from '@/utils/connections';
 import {normalizeLocalDatabasePath, sanitizeLocalFilePath} from '@/utils/fsPath';
 import {
     IN_MEMORY_DATABASE,
@@ -629,7 +634,9 @@ export const NewConnectionModal = ({
         !noConnectionRequired &&
         activeDriver?.capabilities?.file_based === false &&
         !activeDriver?.capabilities?.folder_based;
-    const supportsUnixSocket = activeDriver?.capabilities?.unix_socket === true;
+    // A local socket needs the driver capability and a platform with Unix
+    // sockets; through SSH the server dials it, so Windows can use that too.
+    const supportsUnixSocket = activeDriver?.capabilities?.unix_socket === true && hasUnixSockets();
     const tunnelEnabled = !!formData.ssh_enabled || !!formData.k8s_enabled;
     const socketPathSet = !!formData.unix_socket_path?.trim();
     const canUseSocket =
@@ -2575,6 +2582,9 @@ export const NewConnectionModal = ({
                 database: parsed.database || '',
                 connection_uri: parsed.connection_uri,
                 connection_uri_in_keychain: false,
+                // `?socket=` switches the form to the socket endpoint; a string
+                // without it goes back to host and port.
+                unix_socket_path: parsed.unix_socket_path,
             };
 
             const importingMysql =

@@ -336,9 +336,7 @@ fn build_tunnel_map_key(
 /// is configured (with SSH enabled it names a socket on the SSH server, just
 /// like host:port name the destination from the server's perspective),
 /// otherwise the database host:port.
-fn ssh_forward_destination(
-    params: &ConnectionParams,
-) -> crate::ssh_tunnel::SshForwardDestination {
+fn ssh_forward_destination(params: &ConnectionParams) -> crate::ssh_tunnel::SshForwardDestination {
     match params.unix_socket_path() {
         Some(path) => crate::ssh_tunnel::SshForwardDestination::UnixSocket {
             path: path.to_string(),
@@ -602,7 +600,11 @@ fn resolve_connection_transport(params: &ConnectionParams) -> Result<ConnectionP
             if let Some(tunnel) = tunnels.get(&map_key) {
                 if tunnel.is_alive() {
                     log::debug!("Reusing existing SSH tunnel on port {}", tunnel.local_port);
-                    return Ok(params_through_tunnel(params, tunnel.local_port, &destination));
+                    return Ok(params_through_tunnel(
+                        params,
+                        tunnel.local_port,
+                        &destination,
+                    ));
                 }
                 log::info!(
                     "Discarding dead SSH tunnel on port {}; the session ended",

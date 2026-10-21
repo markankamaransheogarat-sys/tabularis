@@ -17,6 +17,8 @@ export interface ParsedConnectionString {
     password?: string;
     /** TLS mode selected through sslmode / ssl-mode in an imported URI. */
     ssl_mode?: string;
+    /** MySQL/MariaDB Unix socket path from a `?socket=` query parameter. */
+    unix_socket_path?: string;
     database: string;
     /** Original connection string, preserved verbatim for URI-passthrough drivers.
      * When set it is authoritative: the decomposed fields above are only there so
@@ -372,6 +374,10 @@ export function parseConnectionString(
             : undefined
         : url.searchParams.get('password') || undefined;
     const ssl_mode = getSslModeFromUrl(url, protocol);
+    // `mysql://root@localhost/db?socket=/tmp/mysql.sock`: the socket replaces
+    // host:port (the host is kept so the form can switch back).
+    const unix_socket_path =
+        resolved.id === 'mysql' ? url.searchParams.get('socket')?.trim() || undefined : undefined;
 
     let database = url.pathname;
     if (database.startsWith('/')) {
@@ -396,6 +402,7 @@ export function parseConnectionString(
             password,
             database,
             ssl_mode,
+            unix_socket_path,
         },
     };
 }
@@ -411,6 +418,7 @@ export function toConnectionParams(parsed: ParsedConnectionString): Partial<Conn
         username: parsed.username,
         password: parsed.password,
         ssl_mode: parsed.ssl_mode,
+        unix_socket_path: parsed.unix_socket_path,
         database: parsed.database,
         connection_uri: parsed.connection_uri,
     };

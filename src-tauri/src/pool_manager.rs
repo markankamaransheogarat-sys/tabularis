@@ -319,11 +319,9 @@ pub(crate) fn build_mysql_options(
 
     if local_socket.is_some() {
         if cfg!(windows) {
-            return Err(
-                "Unix socket connections are not supported on Windows. \
+            return Err("Unix socket connections are not supported on Windows. \
                  Connect with host and port instead."
-                    .to_string(),
-            );
+                .to_string());
         }
         if params.use_iam_auth.unwrap_or(false) {
             return Err(

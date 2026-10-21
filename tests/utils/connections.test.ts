@@ -16,6 +16,7 @@ import {
     groupDropZone,
     unixSocketPathIssue,
     effectiveLocalSocketPath,
+    hasUnixSockets,
     type ConnectionParams,
     type DatabaseDriver,
 } from '@/utils/connections';
@@ -923,6 +924,14 @@ describe('connections', () => {
             expect(planGroupDrop(groups, 'pg', 'pg', 'before')).toBeNull();
         });
     });
+    describe('hasUnixSockets', () => {
+        it('is false only on Windows', () => {
+            expect(hasUnixSockets('Win32')).toBe(false);
+            expect(hasUnixSockets('MacIntel')).toBe(true);
+            expect(hasUnixSockets('Linux x86_64')).toBe(true);
+        });
+    });
+
     describe('unixSocketPathIssue', () => {
         it('should accept an empty path', () => {
             expect(unixSocketPathIssue('')).toBeNull();

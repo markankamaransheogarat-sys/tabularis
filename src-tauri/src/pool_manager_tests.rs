@@ -1658,6 +1658,15 @@ mod local_unix_socket_tests {
 
     #[cfg(unix)]
     #[test]
+    fn mysql_local_socket_rejects_iam_auth() {
+        let mut params = socket_params("mysql", "/tmp/mysql.sock");
+        params.use_iam_auth = Some(true);
+        let err = build_mysql_options(&params, None).expect_err("IAM needs TLS to RDS");
+        assert!(err.contains("Unix socket"), "unexpected error: {err}");
+    }
+
+    #[cfg(unix)]
+    #[test]
     fn mysql_cleartext_plugin_allowed_over_local_socket() {
         let mut params = socket_params("mysql", "/tmp/mysql.sock");
         params.enable_cleartext_plugin = Some(true);
@@ -1699,13 +1708,19 @@ mod local_unix_socket_tests {
     fn local_sockets_are_rejected_on_windows() {
         let mysql = build_mysql_options(&socket_params("mysql", "/tmp/mysql.sock"), None)
             .expect_err("no Unix sockets on Windows");
-        assert!(mysql.contains("not supported on Windows"), "unexpected error: {mysql}");
+        assert!(
+            mysql.contains("not supported on Windows"),
+            "unexpected error: {mysql}"
+        );
         let postgres = build_postgres_configurations(&socket_params(
             "postgres",
             "/var/run/postgresql/.s.PGSQL.5432",
         ))
         .expect_err("no Unix sockets on Windows");
-        assert!(postgres.contains("not supported on Windows"), "unexpected error: {postgres}");
+        assert!(
+            postgres.contains("not supported on Windows"),
+            "unexpected error: {postgres}"
+        );
     }
 
     #[test]

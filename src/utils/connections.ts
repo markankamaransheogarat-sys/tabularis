@@ -186,6 +186,17 @@ export function unixSocketPathIssue(rawPath: string): UnixSocketPathIssue | null
  * @param params - Connection parameters (any object carrying the three fields)
  * @returns The trimmed socket path, or null when none applies
  */
+/**
+ * Whether this platform has Unix domain sockets. Windows has none, so a local
+ * socket is not offered there (a socket reached through the SSH tunnel still
+ * is: the SSH server dials it).
+ */
+export function hasUnixSockets(
+    platform: string = typeof navigator !== 'undefined' ? navigator.platform : '',
+): boolean {
+    return !/^win/i.test(platform);
+}
+
 export function effectiveLocalSocketPath(params: {
     unix_socket_path?: string;
     ssh_enabled?: boolean;
