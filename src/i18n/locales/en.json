@@ -1309,7 +1309,6 @@
     "socketPathForwardActive": "The SSH server connects to this socket instead of Host and Port. A database on a socket cannot negotiate TLS, so it is turned off; the SSH tunnel still encrypts the whole path.",
     "socketPathNotAbsolute": "Enter an absolute path, as it appears on the machine that connects to the socket.",
     "socketPathDirectory": "Point at the socket file itself, not the directory holding it.",
-    "socketPathTunnel": "Not used while a Kubernetes tunnel is enabled.",
     "saveKeychain": "Save passwords in Keychain",
     "secretsStoredInPlainText": "Passwords will be stored in plain text in the connection file.",
     "testConnection": "Test Connection",

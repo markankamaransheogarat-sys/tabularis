@@ -989,7 +989,7 @@ describe('connections', () => {
                 database: 'mydb',
                 unix_socket_path: '/tmp/mysql.sock',
             };
-            expect(formatConnectionString(params)).toBe('/tmp/mysql.sock/mydb');
+            expect(formatConnectionString(params)).toBe('/tmp/mysql.sock (mydb)');
         });
 
         it('formatConnectionString should ignore the socket while a tunnel is enabled', () => {

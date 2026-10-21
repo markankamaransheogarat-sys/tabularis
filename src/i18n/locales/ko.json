@@ -1217,7 +1217,6 @@
     "socketPathForwardActive": "SSH 서버가 호스트와 포트 대신 이 소켓에 연결합니다. 소켓의 데이터베이스는 TLS를 협상할 수 없어 꺼지지만, SSH 터널이 전체 경로를 암호화합니다.",
     "socketPathNotAbsolute": "소켓에 연결하는 컴퓨터에 있는 그대로의 절대 경로를 입력하세요.",
     "socketPathDirectory": "소켓이 있는 디렉터리가 아니라 소켓 파일 자체를 지정하세요.",
-    "socketPathTunnel": "Kubernetes 터널이 활성화된 동안에는 사용되지 않습니다.",
     "saveKeychain": "키체인에 비밀번호 저장",
     "secretsStoredInPlainText": "비밀번호는 연결 파일에 평문으로 저장됩니다.",
     "testConnection": "연결 테스트",

@@ -180,13 +180,6 @@ export function unixSocketPathIssue(rawPath: string): UnixSocketPathIssue | null
 }
 
 /**
- * The local Unix socket path in effect for a connection: set and non-empty,
- * with no SSH or Kubernetes tunnel overriding it (the tunnel owns the route
- * to the database, so the socket is ignored while one is enabled).
- * @param params - Connection parameters (any object carrying the three fields)
- * @returns The trimmed socket path, or null when none applies
- */
-/**
  * Whether this platform has Unix domain sockets. Windows has none, so a local
  * socket is not offered there (a socket reached through the SSH tunnel still
  * is: the SSH server dials it).
@@ -197,6 +190,13 @@ export function hasUnixSockets(
     return !/^win/i.test(platform);
 }
 
+/**
+ * The local Unix socket path in effect for a connection: set and non-empty,
+ * with no SSH or Kubernetes tunnel overriding it (the tunnel owns the route
+ * to the database, so the socket is ignored while one is enabled).
+ * @param params - Connection parameters (any object carrying the three fields)
+ * @returns The trimmed socket path, or null when none applies
+ */
 export function effectiveLocalSocketPath(params: {
     unix_socket_path?: string;
     ssh_enabled?: boolean;
@@ -229,7 +229,8 @@ export function formatConnectionString(
 
     const socketPath = effectiveLocalSocketPath(params);
     if (socketPath) {
-        return `${socketPath}/${params.database}`;
+        // `/path/to.sock/db` would read like a path inside the socket file.
+        return params.database ? `${socketPath} (${params.database})` : socketPath;
     }
 
     const host = params.host || 'localhost';

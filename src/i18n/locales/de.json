@@ -1242,7 +1242,6 @@
     "socketPathForwardActive": "Der SSH-Server verbindet sich mit diesem Socket statt mit Host und Port. Eine Datenbank auf einem Socket kann kein TLS aushandeln, daher ist es deaktiviert; der SSH-Tunnel verschlüsselt weiterhin den gesamten Pfad.",
     "socketPathNotAbsolute": "Absoluten Pfad eingeben, wie er auf dem Rechner erscheint, der sich mit dem Socket verbindet.",
     "socketPathDirectory": "Die Socket-Datei selbst angeben, nicht das Verzeichnis, das sie enthält.",
-    "socketPathTunnel": "Wird nicht verwendet, solange ein Kubernetes-Tunnel aktiv ist.",
     "saveKeychain": "Passwörter im Keychain speichern",
     "secretsStoredInPlainText": "Passwörter werden im Klartext in der Verbindungsdatei gespeichert.",
     "testConnection": "Verbindung testen",

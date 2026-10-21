@@ -50,6 +50,8 @@ interface ResolvedDriver {
     passthrough: boolean;
     /** The declared example uses a scheme without an authority. */
     opaque: boolean;
+    /** The driver can connect through a Unix socket (`?socket=` import). */
+    unixSocket: boolean;
 }
 
 /**
@@ -218,6 +220,7 @@ function buildProtocolRegistry(
             id: driver.id,
             local,
             passthrough: uriPassthroughEnabled(driver.capabilities),
+            unixSocket: driver.capabilities?.unix_socket === true,
             opaque: /^[a-z][a-z\d+.-]*:(?!\/\/)/i.test(
                 (
                     driver.capabilities?.connection_string_example ??
@@ -376,8 +379,9 @@ export function parseConnectionString(
     const ssl_mode = getSslModeFromUrl(url, protocol);
     // `mysql://root@localhost/db?socket=/tmp/mysql.sock`: the socket replaces
     // host:port (the host is kept so the form can switch back).
-    const unix_socket_path =
-        resolved.id === 'mysql' ? url.searchParams.get('socket')?.trim() || undefined : undefined;
+    const unix_socket_path = resolved.unixSocket
+        ? url.searchParams.get('socket')?.trim() || undefined
+        : undefined;
 
     let database = url.pathname;
     if (database.startsWith('/')) {

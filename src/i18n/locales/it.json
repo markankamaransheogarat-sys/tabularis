@@ -1305,7 +1305,6 @@
     "socketPathForwardActive": "Il server SSH si collega a questo socket invece che a Host e Porta. Un database su socket non può negoziare TLS, quindi viene disattivato; il tunnel SSH cifra comunque l'intero percorso.",
     "socketPathNotAbsolute": "Inserisci un percorso assoluto, come appare sulla macchina che si collega al socket.",
     "socketPathDirectory": "Indica il file socket stesso, non la directory che lo contiene.",
-    "socketPathTunnel": "Non usato mentre è attivo un tunnel Kubernetes.",
     "saveKeychain": "Salva password nel Portachiavi",
     "secretsStoredInPlainText": "Le password verranno salvate in chiaro nel file delle connessioni.",
     "testConnection": "Testa Connessione",

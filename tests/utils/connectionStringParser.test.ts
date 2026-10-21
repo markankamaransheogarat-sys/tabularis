@@ -30,7 +30,13 @@ function createRemoteDriver(id: string, example: string): ConnectionStringDriver
 // example-derived protocol.
 const CAPABILITY_DRIVERS: ConnectionStringDriver[] = [
     createRemoteDriver('postgres', 'postgres://user:pass@localhost:5432/db'),
-    createRemoteDriver('mysql', 'mysql://user:pass@localhost:3306/db'),
+    {
+        ...createRemoteDriver('mysql', 'mysql://user:pass@localhost:3306/db'),
+        capabilities: {
+            ...createRemoteDriver('mysql', 'mysql://user:pass@localhost:3306/db').capabilities,
+            unix_socket: true,
+        },
+    },
     {
         id: 'sqlite',
         capabilities: {
@@ -845,6 +851,21 @@ describe('connectionStringParser', () => {
                 expect(result.success).toBe(true);
                 if (result.success) expect(result.params.unix_socket_path).toBeUndefined();
             }
+        });
+
+        it('follows the unix_socket capability, not the driver id', () => {
+            const mariadb: ConnectionStringDriver = {
+                id: 'mariadb',
+                capabilities: {
+                    ...createRemoteDriver('mariadb', 'mariadb://user:pass@localhost:3306/db')
+                        .capabilities,
+                    unix_socket: true,
+                },
+            };
+            const result = parseConnectionString('mariadb://root@localhost/db?socket=/tmp/m.sock', [
+                mariadb,
+            ]);
+            expect(result.success && result.params.unix_socket_path).toBe('/tmp/m.sock');
         });
 
         it('ignores ?socket= for other drivers', () => {

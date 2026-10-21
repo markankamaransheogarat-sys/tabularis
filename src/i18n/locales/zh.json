@@ -1218,7 +1218,6 @@
     "socketPathForwardActive": "SSH 服务器连接到此套接字，而不是主机和端口。套接字上的数据库无法协商 TLS，因此已关闭；SSH 隧道仍会加密整个链路。",
     "socketPathNotAbsolute": "请输入绝对路径，即该路径在连接套接字的那台机器上的形式。",
     "socketPathDirectory": "请指向套接字文件本身，而不是包含它的目录。",
-    "socketPathTunnel": "启用 Kubernetes 隧道时不使用。",
     "saveKeychain": "在密钥链中保存密码",
     "secretsStoredInPlainText": "密码将以明文保存在连接文件中。",
     "testConnection": "测试连接",

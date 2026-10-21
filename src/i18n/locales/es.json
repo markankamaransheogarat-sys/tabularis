@@ -1270,7 +1270,6 @@
     "socketPathForwardActive": "El servidor SSH se conecta a este socket en lugar de Host y Puerto. Una base de datos en un socket no puede negociar TLS, así que se desactiva; el túnel SSH sigue cifrando todo el trayecto.",
     "socketPathNotAbsolute": "Introduce una ruta absoluta, tal como aparece en la máquina que se conecta al socket.",
     "socketPathDirectory": "Apunta al archivo del socket, no al directorio que lo contiene.",
-    "socketPathTunnel": "No se usa mientras hay un túnel Kubernetes activo.",
     "saveKeychain": "Guardar contraseñas en el Llavero",
     "secretsStoredInPlainText": "Las contraseñas se guardarán en texto sin formato en el archivo de conexiones.",
     "testConnection": "Probar Conexión",

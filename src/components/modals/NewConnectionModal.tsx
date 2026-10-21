@@ -2570,6 +2570,11 @@ export const NewConnectionModal = ({
             );
 
             const driverChanged = newDriver !== driver;
+            // The socket field is hidden on Windows (unless the SSH server dials it),
+            // so an imported path would be saved with no way to see or fix it.
+            const socketFieldAvailable =
+                parsedDriver?.capabilities?.unix_socket === true &&
+                (hasUnixSockets() || !!formData.ssh_enabled);
             const parsedFields: Partial<ConnectionParams> = {
                 driver: newDriver,
                 host: parsed.host || 'localhost',
@@ -2584,7 +2589,7 @@ export const NewConnectionModal = ({
                 connection_uri_in_keychain: false,
                 // `?socket=` switches the form to the socket endpoint; a string
                 // without it goes back to host and port.
-                unix_socket_path: parsed.unix_socket_path,
+                unix_socket_path: socketFieldAvailable ? parsed.unix_socket_path : undefined,
             };
 
             const importingMysql =
